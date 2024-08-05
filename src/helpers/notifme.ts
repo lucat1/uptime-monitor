@@ -349,18 +349,21 @@ export const sendNotification = async (message: string) => {
     }
     console.log("Finished sending Telegram");
   }
+  console.log('TEST MESSAGE!')
+  console.log(getSecret("NOTIFICATION_NTFY"), getSecret("NOTIFICATION_NTFY_TOPIC"))
   if (getSecret("NOTIFICATION_NTFY") && getSecret("NOTIFICATION_NTFY_TOPIC")) {
-    console.log("Sending NTFY notifications")
+    console.log("Sending ntfy.sh")
     try {
       const endpoint = getSecret("NOTIFICATION_NTFY_ENDPOINT") ? getSecret("NOTIFICATION_NTFY_ENDPOINT") : 'https://ntfy.sh';
       await axios.post(
         `${endpoint}/${getSecret("NOTIFICATION_NTFY_TOPIC")}`,
         message
       )
+      console.log("Success ntfy.sh");
     } catch (error) {
       console.error("Got an error", error)
     }
-    console.log("Finished sending with ntfy.sh");
+    console.log("Finished sending ntfy.sh");
   }
   if (getSecret("NOTIFICATION_LARK")) {
     console.log("Sending Lark");
