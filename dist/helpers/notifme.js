@@ -326,6 +326,17 @@ const sendNotification = async (message) => {
         }
         console.log("Finished sending Telegram");
     }
+    if ((0, secrets_1.getSecret)("NOTIFICATION_NTFY") && (0, secrets_1.getSecret)("NOTIFICATION_NTFY_TOPIC")) {
+        console.log("Sending NTFY notifications");
+        try {
+            const endpoint = (0, secrets_1.getSecret)("NOTIFICATION_NTFY_ENDPOINT") ? (0, secrets_1.getSecret)("NOTIFICATION_NTFY_ENDPOINT") : 'https://ntfy.sh';
+            await axios_1.default.post(`${endpoint}/${(0, secrets_1.getSecret)("NOTIFICATION_NTFY_TOPIC")}`, message);
+        }
+        catch (error) {
+            console.error("Got an error", error);
+        }
+        console.log("Finished sending with ntfy.sh");
+    }
     if ((0, secrets_1.getSecret)("NOTIFICATION_LARK")) {
         console.log("Sending Lark");
         try {

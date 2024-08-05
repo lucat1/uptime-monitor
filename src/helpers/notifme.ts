@@ -281,7 +281,7 @@ export const sendNotification = async (message: string) => {
         visibility: visibility,
         status: message,
       },
-      { 
+      {
         headers: {
           "Authorization": `Bearer ${getSecret("NOTIFICATION_MASTODON_API_KEY")}`
         }
@@ -348,6 +348,19 @@ export const sendNotification = async (message: string) => {
       console.log("Got an error", error);
     }
     console.log("Finished sending Telegram");
+  }
+  if (getSecret("NOTIFICATION_NTFY") && getSecret("NOTIFICATION_NTFY_TOPIC")) {
+    console.log("Sending NTFY notifications")
+    try {
+      const endpoint = getSecret("NOTIFICATION_NTFY_ENDPOINT") ? getSecret("NOTIFICATION_NTFY_ENDPOINT") : 'https://ntfy.sh';
+      await axios.post(
+        `${endpoint}/${getSecret("NOTIFICATION_NTFY_TOPIC")}`,
+        message
+      )
+    } catch (error) {
+      console.error("Got an error", error)
+    }
+    console.log("Finished sending with ntfy.sh");
   }
   if (getSecret("NOTIFICATION_LARK")) {
     console.log("Sending Lark");
